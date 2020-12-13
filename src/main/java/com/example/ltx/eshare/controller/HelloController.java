@@ -1,5 +1,6 @@
 package com.example.ltx.eshare.controller;
 
+import com.example.ltx.eshare.common.enums.ResponseEnum;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
     @GetMapping("/hello")
-    public String hello(){
-        return "hello";
+    public String hello(String test){
+        ResponseEnum.DATA_IS_WRONG.assertNotNull(test);
+        return test;
     }
 }
