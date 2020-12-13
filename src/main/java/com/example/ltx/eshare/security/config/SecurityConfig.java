@@ -1,12 +1,15 @@
 package com.example.ltx.eshare.security.config;
 
+import com.example.ltx.eshare.module.entity.User;
 import com.example.ltx.eshare.module.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -73,12 +76,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         PrintWriter out = resp.getWriter();
                         Map<String, Object> map = new HashMap<>();
                         map.put("status", HttpServletResponse.SC_OK);
-                        //authentication.getPrincipal()存放的是登录成功用户的信息
+                        User principal = (User) authentication.getPrincipal();
+                        String token = JwtUtil.sign(principal.getUsername(), principal.getPassword());
                         map.put("msg", authentication.getPrincipal());
-
-                        out.write(new ObjectMapper().writeValueAsString(map));
-                        out.flush();
-                        out.close();
+                        map.put("token",token);
+                        //只返回token
+                        ResponseUtil.responseJson(resp, HttpStatus.OK.value(), map);
                     }
                 })
                 .failureHandler(new AuthenticationFailureHandler() {
