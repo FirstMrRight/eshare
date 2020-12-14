@@ -22,6 +22,10 @@ spring:
       shutdown-timeout: 100ms
     password: ''
     port: 6379
+
+
+
+
 server:
   port: 9527
 
@@ -29,7 +33,7 @@ mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml
   global-config:
     # 关闭MP3.0自带的banner
-    banner: false
+    banner: true
     db-config:
       #主键类型  0:"数据库ID自增",1:"该类型为未设置主键类型", 2:"用户输入ID",3:"全局唯一ID (数字类型唯一ID)", 4:"全局唯一ID UUID",5:"字符串全局唯一ID (idWorker 的字符串表示)";
       id-type: ASSIGN_ID
