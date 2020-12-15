@@ -8,6 +8,8 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.ltx.eshare.common.enums.ResponseEnum;
 import com.google.common.base.Preconditions;
+import com.sun.istack.internal.NotNull;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Map;
@@ -94,7 +96,7 @@ public class JwtUtil {
      * @return
      */
     public static String getUserNameByToken(HttpServletRequest request) throws Exception {
-        String accessToken = request.getHeader("X-Access-Token");
+        String accessToken = request.getHeader("token");
         String username = getUsername(accessToken);
         Preconditions.checkNotNull(username, ResponseEnum.USER_NOT_EXIST_OR_ERROR);
         return username;
