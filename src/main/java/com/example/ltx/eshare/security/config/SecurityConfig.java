@@ -1,6 +1,6 @@
 package com.example.ltx.eshare.security.config;
 
-import com.example.ltx.eshare.common.redis.RedisUtil;
+import com.example.ltx.eshare.common.redis.RedisService;
 import com.example.ltx.eshare.module.entity.User;
 import com.example.ltx.eshare.module.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserService userService;
 
     @Autowired
-    private RedisUtil redisUtil;
+    private RedisService redisUtil;
 
     public static final long CACHE_TIME = 60 * 60 * 24 * 3;
 
@@ -78,14 +78,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication authentication) throws IOException, ServletException {
                         //登陆成功处理句柄，前后分离项目，给前端返回Json即可
                         resp.setContentType("application/json;charset=utf-8");
-                        PrintWriter out = resp.getWriter();
                         Map<String, Object> map = new HashMap<>();
                         map.put("status", HttpServletResponse.SC_OK);
                         User principal = (User) authentication.getPrincipal();
                         String token = JwtUtil.sign(principal.getUsername(), principal.getPassword());
                         map.put("msg", authentication.getPrincipal());
                         map.put("token", token);
-                        redisUtil.set("USER_UID:" + principal.getId(), map, CACHE_TIME);
+                        redisUtil.setCacheObject("USER_UID_TEST:" + principal.getId(), principal);
                         ResponseUtil.responseJson(resp, HttpStatus.OK.value(), map);
                     }
                 })

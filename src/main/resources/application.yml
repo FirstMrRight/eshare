@@ -11,7 +11,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
 
   redis:
-    database: 1
+    database: 2
     host: 49.232.21.180
     lettuce:
       pool:
