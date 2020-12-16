@@ -5,21 +5,18 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-
 /**
  * @author Liutx
- * @date 2020/12/13 15:37
+ * @date 2020/12/16 22:07
  * @Description
  */
-
 @Data
 @Accessors(chain = true)
-public class Role implements Serializable {
+public class MenuRole {
     private static final long serialVersionUID = 1L;
 
-    @TableId(type = IdType.AUTO)
+    @TableId(type=IdType.AUTO)
     private Integer id;
-    private String name;
-    private String nameZh;
+    private Integer mid;
+    private Integer rid;
 }

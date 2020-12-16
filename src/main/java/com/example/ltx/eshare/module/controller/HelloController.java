@@ -1,4 +1,4 @@
-package com.example.ltx.eshare.controller;
+package com.example.ltx.eshare.module.controller;
 
 import com.example.ltx.eshare.common.enums.ResponseEnum;
 import org.springframework.web.bind.annotation.GetMapping;
