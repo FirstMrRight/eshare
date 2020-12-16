@@ -14,7 +14,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import java.util.Objects;
 
+
+/**
+ * @author Liu-PC
+ */
 @Slf4j
 @RestControllerAdvice
 public class GlobalResponseBodyAdvice implements ResponseBodyAdvice {
@@ -28,9 +33,9 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice {
     public Object beforeBodyWrite(Object object, MethodParameter methodParameter,
                                   MediaType mediaType, Class aClass,
                                   ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-//        if (object instanceof ResultMessage) {
-//            return object;
-//        }
+        if (object instanceof ResultMessage) {
+            return object;
+        }
         return object;
     }
 
@@ -42,12 +47,14 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice {
 
     @ExceptionHandler({Exception.class})
     public ResultMessage exceptions(Exception e) {
-        if (e instanceof BusinessException) {// 处理业务异常
+        if (e instanceof BusinessException) {
+            // 处理业务异常
             BusinessException businessException = (BusinessException) e;
             return ResultMessage.failure(businessException.getResultCode());
-        } else if (e instanceof MethodArgumentNotValidException) {// 处理javax.validation异常
+        } else if (e instanceof MethodArgumentNotValidException) {
+            // 处理javax.validation异常
             MethodArgumentNotValidException methodArgumentNotValidException = (MethodArgumentNotValidException) e;
-            String msg = methodArgumentNotValidException.getBindingResult().getFieldError().getDefaultMessage();
+            String msg = Objects.requireNonNull(methodArgumentNotValidException.getBindingResult().getFieldError()).getDefaultMessage();
             return ResultMessage.failure(ResultCode.PARAM_IS_INVALID, msg);
         }
         log.error("exception is {}", e.getMessage(), e);

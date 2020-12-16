@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -54,6 +57,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+
+    @Bean
+    /**
+     * 定义角色继承
+     */
+    RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        roleHierarchy.setHierarchy("ROLE_dba> ROLE_admin > ROLE_user");
+        return roleHierarchy;
+    }
+
     /**
      * 配置HTTP请求规则
      * 什么请求路径需要什么权限才能访问，
@@ -85,7 +99,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         String token = JwtUtil.sign(principal.getUsername(), principal.getPassword());
                         map.put("msg", authentication.getPrincipal());
                         map.put("token", token);
-                        map.put("userName",principal.getUsername());
+                        map.put("userName", principal.getUsername());
                         redisUtil.setCacheObject("USER_UID_TEST:" + principal.getId(), map);
                         ResponseUtil.responseJson(resp, HttpStatus.OK.value(), map);
                     }
@@ -127,4 +141,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable();
     }
+
 }
