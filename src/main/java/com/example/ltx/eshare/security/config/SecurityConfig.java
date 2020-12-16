@@ -81,10 +81,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         Map<String, Object> map = new HashMap<>();
                         map.put("status", HttpServletResponse.SC_OK);
                         User principal = (User) authentication.getPrincipal();
+                        Object userInfo = ResponseUtil.responseJson(principal);
                         String token = JwtUtil.sign(principal.getUsername(), principal.getPassword());
                         map.put("msg", authentication.getPrincipal());
                         map.put("token", token);
-                        redisUtil.setCacheObject("USER_UID_TEST:" + principal.getId(), principal);
+                        map.put("userName",principal.getUsername());
+                        redisUtil.setCacheObject("USER_UID_TEST:" + principal.getId(), map);
                         ResponseUtil.responseJson(resp, HttpStatus.OK.value(), map);
                     }
                 })

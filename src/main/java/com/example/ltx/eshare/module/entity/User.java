@@ -2,6 +2,7 @@ package com.example.ltx.eshare.module.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,16 +22,21 @@ import java.util.List;
 
 @Data
 @Accessors(chain = true)
-public class User implements Serializable, UserDetails {
+public class User implements UserDetails {
+
+    private static final long serialVersionUID = 1L;
+
     @TableId(type = IdType.ASSIGN_ID)
     private Integer id;
     private String userName;
     private String passWord;
     private Boolean enabled;
     private Boolean locked;
+    @JsonIgnore
     private List<Role> roles;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         for (Role role : roles) {

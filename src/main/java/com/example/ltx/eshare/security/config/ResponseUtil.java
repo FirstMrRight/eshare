@@ -1,6 +1,8 @@
 package com.example.ltx.eshare.security.config;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
@@ -24,4 +26,10 @@ public class ResponseUtil {
             e.printStackTrace();
         }
     }
+
+    public static Object responseJson(Object object) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(object);
+    }
+
 }
