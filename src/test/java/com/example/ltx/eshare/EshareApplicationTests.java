@@ -4,8 +4,10 @@ import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
 import com.example.ltx.eshare.common.enums.ResponseEnum;
 import com.example.ltx.eshare.common.redis.RedisService;
+import com.example.ltx.eshare.module.entity.Menu;
 import com.example.ltx.eshare.module.entity.Role;
 import com.example.ltx.eshare.module.entity.User;
+import com.example.ltx.eshare.module.service.MenuService;
 import org.checkerframework.checker.units.qual.A;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 class EshareApplicationTests {
@@ -21,6 +24,8 @@ class EshareApplicationTests {
     @Autowired
     private RedisService redisUtil;
 
+    @Autowired
+    MenuService menuService;
 
     @Test
     void contextLoads() {
@@ -32,7 +37,6 @@ class EshareApplicationTests {
         JSON parse = JSONUtil.parse(user_uid_test);
         System.out.println(parse);
     }
-
 
     @Test
     /**
@@ -49,6 +53,17 @@ class EshareApplicationTests {
         System.out.println(encode);
 
         bcryptPasswordEncoder.matches("admin", encode);
-        ResponseEnum.USER_NOT_EXIST_OR_ERROR.assertEquals(false, bcryptPasswordEncoder.matches("admin1", encode),ResponseEnum.USER_NOT_EXIST_OR_ERROR.getMessage());
+        ResponseEnum.USER_NOT_EXIST_OR_ERROR.assertEquals(false, bcryptPasswordEncoder.matches("admin1", encode), ResponseEnum.USER_NOT_EXIST_OR_ERROR.getMessage());
+    }
+
+    @Test
+    public void menu() {
+        System.out.println(menuService.getAllMenus());
+    }
+
+    @Test
+    public void menu2() {
+        List<Menu> menu_all = (List<Menu>) redisUtil.getCacheObject("MENU_ALL");
+        System.out.println(menu_all);
     }
 }

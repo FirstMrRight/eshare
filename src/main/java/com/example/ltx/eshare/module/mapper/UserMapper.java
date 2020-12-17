@@ -11,7 +11,6 @@ import java.util.List;
  * @date 2020/12/13 19:22
  * @Description
  */
-@Mapper
 public interface UserMapper {
     User loadUserByUserName(String userName);
 

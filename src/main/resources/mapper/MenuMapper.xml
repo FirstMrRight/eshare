@@ -6,11 +6,27 @@
     <resultMap id="BaseResultMap" type="com.example.ltx.eshare.module.entity.Menu">
         <id column="id" property="id" />
         <result column="pattern" property="pattern" />
+        <collection property="roles" ofType="com.example.ltx.eshare.module.entity.Role">
+            <id column="rid" property="id"/>
+            <result column="rname" property="name"/>
+            <result column="rnameZh" property="nameZh"/>
+        </collection>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, pattern
     </sql>
+    <select id="getAllMenus" resultMap="BaseResultMap">
+        SELECT
+            m.*,
+            r.id AS rid,
+            r.NAME AS rname,
+            r.nameZh AS rnameZh
+        FROM
+            menu m
+                LEFT JOIN menu_role mr ON m.id = mr.mid
+                LEFT JOIN role r ON mr.rid = r.id
+    </select>
 
 </mapper>
