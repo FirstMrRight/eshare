@@ -1,4 +1,4 @@
-package com.example.ltx.eshare;
+package com.example.ltx.eshare.common.freemarker;
 
 
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
