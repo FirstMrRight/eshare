@@ -9,7 +9,8 @@ public interface BisExceptionAssert extends IResponseEnum, Assert {
         if (args != null && args.length != 0) {
             msg = String.format("%s", args);
         }
-        return new BisException(this, args, msg);
+        BisException bisException = new BisException(this, args, msg);
+        return bisException;
     }
 
     @Override

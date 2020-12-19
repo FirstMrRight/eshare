@@ -1,7 +1,9 @@
 package com.example.ltx.eshare.common.exception;
 
 
+import com.example.ltx.eshare.common.enums.ResponseEnum;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 
 /**
  * 业务断言
@@ -86,4 +88,9 @@ public interface Assert {
         }
     }
 
+    default void assertException(Exception runException) {
+        if (runException instanceof InsufficientAuthenticationException) {
+            throw newException(ResponseEnum.SYSTEM_INNER_ERROR.getMessage());
+        }
+    }
 }
