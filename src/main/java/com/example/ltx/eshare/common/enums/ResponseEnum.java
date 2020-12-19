@@ -32,6 +32,8 @@ public enum ResponseEnum implements BisExceptionAssert {
     ROLE_DOES_NOT_EXIST(20011, "该角色不存在"),
     WRONG_PHONE_NUMBER(20012, "手机号错误"),
     SMS_IS_EXIST(20013, "验证码已发送，请勿重复点击"),
+    LOGIN_FILURE(20014, "登录失败"),
+    USER_ACCOUNT_LOCKED(20014, "账户已被锁定"),
 
     CLIENT_USER_NOT_LOGGED_IN(25001, "客户端用户未登录"),
     CLIENT_USER_UPDATE_FAILED(25002, "客户端用户更新失败"),

@@ -1,6 +1,9 @@
 package com.example.ltx.eshare.security.config;
 
+import com.example.ltx.eshare.common.constant.BusinessConstant;
+import com.example.ltx.eshare.common.enums.ResponseEnum;
 import com.example.ltx.eshare.common.redis.RedisService;
+import com.example.ltx.eshare.common.utils.LocalDateUtils;
 import com.example.ltx.eshare.module.entity.User;
 import com.example.ltx.eshare.module.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +15,7 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -44,7 +49,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private RedisService redisUtil;
 
-    public static final long CACHE_TIME = 60 * 60 * 24 * 3;
+
+    @Autowired
+    private SecurityFilter securityFilter;
+
+    @Autowired
+    private OwnAccessDecisionManager ownAccessDecisionManager;
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -94,12 +105,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         Map<String, Object> map = new HashMap<>();
                         map.put("status", HttpServletResponse.SC_OK);
                         User principal = (User) authentication.getPrincipal();
-                        Object userInfo = ResponseUtil.responseJson(principal);
                         String token = JwtUtil.sign(principal.getUsername(), principal.getPassword());
                         map.put("msg", authentication.getPrincipal());
                         map.put("token", token);
                         map.put("userName", principal.getUsername());
-                        redisUtil.setCacheObject("USER_UID_TEST:" + principal.getId(), map);
+                        redisUtil.setCacheObject(BusinessConstant.REDIS_RELATED.PREFIX + LocalDateUtils.getStartTimeOfDayStr() + principal.getId(), map);
                         ResponseUtil.responseJson(resp, HttpStatus.OK.value(), map);
                     }
                 })
@@ -112,11 +122,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         Map<String, Object> map = new HashMap<>();
                         map.put("status", HttpServletResponse.SC_UNAUTHORIZED);
                         if (e instanceof LockedException) {
-                            map.put("msg", "账户被锁定，登录失败");
+                            map.put("msg", ResponseEnum.USER_ACCOUNT_LOCKED.getMessage());
                         } else if (e instanceof BadCredentialsException) {
-                            map.put("msg", "用户名或密码输入错误，登录失败");
+                            map.put("msg", ResponseEnum.USER_NOT_EXIST_OR_ERROR.getMessage());
                         } else {
-                            map.put("msg", "登陆失败");
+                            map.put("msg", ResponseEnum.LOGIN_FILURE.getMessage());
                         }
                         out.write(new ObjectMapper().writeValueAsString(map));
                         out.flush();
@@ -135,6 +145,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         out.write(new ObjectMapper().writeValueAsString("注销成功!"));
                         out.flush();
                         out.close();
+                    }
+                })
+                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+                    @Override
+                    public <O extends FilterSecurityInterceptor> O postProcess(O o) {
+                        o.setAccessDecisionManager(ownAccessDecisionManager);
+                        o.setSecurityMetadataSource(securityFilter);
+                        return o;
                     }
                 })
                 .and()

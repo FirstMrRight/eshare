@@ -1,13 +1,11 @@
 package com.example.ltx.eshare.security.config;
 
+import com.example.ltx.eshare.common.constant.BusinessConstant;
 import com.example.ltx.eshare.common.redis.RedisService;
 import com.example.ltx.eshare.module.entity.Menu;
 import com.example.ltx.eshare.module.entity.Role;
 import com.example.ltx.eshare.module.service.MenuService;
-import com.google.common.base.Preconditions;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
@@ -18,7 +16,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * @author Liutx
@@ -45,9 +42,8 @@ public class SecurityFilter implements FilterInvocationSecurityMetadataSource {
      */
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
         String requestUrl = ((FilterInvocation) o).getRequestUrl();
-        //todo:先走缓存的逻辑,抽出接口类型的枚举MENU_ALL
         List<Menu> allMenus;
-        allMenus = ((List<Menu>) redisService.getCacheObject("MENU_ALL"));
+        allMenus = redisService.getCacheObject(BusinessConstant.REDIS_RELATED.MENU_ALL);
         if (CollectionUtils.isEmpty(allMenus)) {
             allMenus = menuService.getAllMenus();
         }
@@ -61,7 +57,7 @@ public class SecurityFilter implements FilterInvocationSecurityMetadataSource {
                 return SecurityConfig.createList(rolesStr);
             }
         }
-        //返回登录页 都不满足条件
+        //需要的角色都不满足条件，非法请求
         return SecurityConfig.createList("ROLE_login");
     }
 
@@ -77,4 +73,6 @@ public class SecurityFilter implements FilterInvocationSecurityMetadataSource {
     public boolean supports(Class<?> aClass) {
         return true;
     }
+
+
 }

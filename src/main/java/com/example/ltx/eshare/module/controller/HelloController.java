@@ -17,9 +17,30 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/test")
 public class HelloController {
     @GetMapping("hello")
-    @ApiOperation(value = "用户测试",notes = "用户测试notes")
+    @ApiOperation(value = "用户测试", notes = "用户测试notes")
     public String hello(String test) {
         ResponseEnum.DATA_IS_WRONG.assertNotNull(test);
-        return test;
+        return "hello";
+    }
+
+    @GetMapping("db/hello")
+    @ApiOperation(value = "用户测试", notes = "用户测试notes")
+    public String dbHello(String test) {
+        ResponseEnum.DATA_IS_WRONG.assertNotNull(test);
+        return "dbHello";
+    }
+
+    @GetMapping("admin/hello")
+    @ApiOperation(value = "用户测试", notes = "用户测试notes")
+    public String adminHello(String test) {
+        ResponseEnum.DATA_IS_WRONG.assertNotNull(test);
+        return "adminHello";
+    }
+
+    @GetMapping("user/hello")
+    @ApiOperation(value = "用户测试", notes = "用户测试notes")
+    public String userHello(String test) {
+        ResponseEnum.DATA_IS_WRONG.assertNotNull(test);
+        return "userHello";
     }
 }
