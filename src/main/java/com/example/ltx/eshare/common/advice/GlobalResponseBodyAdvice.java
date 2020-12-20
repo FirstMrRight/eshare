@@ -37,26 +37,7 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice {
         if (object instanceof ResultMessage) {
             return object;
         }
-        ResultMessage result;
-
-//        boolean hasEncryptBody = methodParameter.hasMethodAnnotation(EncryptBody.class);
-
-        try {
-//            if (hasEncryptBody) {
-//                String data = JSON.toJSONString(object);
-//                String encryptStr = RSAUtil.encrypt(data, publicKey);
-//                String signStr = data + "&secret=" + secret;
-//                String sign = MD5Util.MD5Encode(signStr, "utf-8");
-//                result = ResultMessage.success(encryptStr, sign);
-//            } else {
-                result = ResultMessage.success(object);
-//            }
-        } catch (Exception e) {
-            log.error("rsa 解密失败:", e);
-            return ResultMessage.failure(ResultCode.SYSTEM_INNER_ERROR);
-        }
-
-        return result;
+        return object;
     }
 
     @ExceptionHandler({BisException.class})
@@ -76,12 +57,6 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice {
             MethodArgumentNotValidException methodArgumentNotValidException = (MethodArgumentNotValidException) e;
             String msg = Objects.requireNonNull(methodArgumentNotValidException.getBindingResult().getFieldError()).getDefaultMessage();
             return ResultMessage.failure(ResultCode.PARAM_IS_INVALID, msg);
-        } else if (e instanceof BisException) {
-            BusinessException businessException = (BusinessException) e;
-            return ResultMessage.failure(businessException.getResultCode());
-        } else if (e instanceof RuntimeException) {
-            BusinessException businessException = (BusinessException) e;
-            return ResultMessage.failure(businessException.getResultCode());
         }
         log.error("exception is {}", e.getMessage(), e);
         return ResultMessage.failure(ResultCode.SYSTEM_INNER_ERROR);

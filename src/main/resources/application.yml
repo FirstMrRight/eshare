@@ -44,3 +44,42 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     # 返回类型为Map,显示null对应的字段
     call-setters-on-nulls: true
+
+encrypt:
+  privateKey: MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDkbr4kplIeVBDx
+    qow8UfjFQTw41rFzCIxtXyz+UgKDUDcRseprjkpTmsGwzbZjTBsRYK2lebhfmmyv
+    Xw7OpsNPWL+6UCk33v5NDbbM76xKTro+3Lmp0YBQzF7PcL06yAhxW0x8apZQnuVL
+    JgAgT5Q60HPdlzGt7DpiZDjLoCmdeIvGht5XOzzzpPg8j0OU2zbGeezTaSA4GWbf
+    rkXN2US1fCGK1Gwk3BBzCyrxGtFc6Y28mrfigFWOnuKvXsdj1+3MfFyBnbFlGhe1
+    giQV6v9Fsim+npyxz2p2q58XCjCZ0xvlG6TBDbpKeJQWzD5R0zrBV5IMBP38VqCt
+    TwOSwMBXAgMBAAECggEANCv20XgLGVIp7If/L2epYaPclT6zmIpDSFeMdylT2Zng
+    efIgkCAXabDWvAK/vT4MkJN8FWcPbQZf/E3BnAEKanzijTLxtwj/G6oeLgAvYWlJ
+    sEHJRbfLjqientIo5dv50aoAdgoB+rfPtrIfJUIHoMcrL1jwx8BENWSedCNIXeZT
+    oxlh2LlVeOdMFU9vEA+qWj+Hpta+8xynpUZ3KsN2BD5vOdm7DSZ48bkIFk2MwAxp
+    MCU1wyk44PDsvNtX138e8T5B8Um3CLwocKoJlEZ6QP0j8iYfIS1N446T2TBUuYXs
+    TglhAkmWRPU/LeqSQyVVNlrimYbuYTlpsMqQDQBvwQKBgQD/0zZo28DPWBOwrADA
+    hkztLcUwz8LGOMMceHOgRC4jpdhJj1TJWNcioGglXhDQ398Sg/yseLMxgFcHDvA0
+    4kIwHhxhqqCFKZKeEVZY3KiE/5Kj0OC77zklkNYN+tPWmQsgy47V5OWNif3Qrpex
+    cpoOIkVxi+BCWAPF3NC5wkdHFQKBgQDklrwOR7QzAhrXJwEYwJZRou+JarTkkdCz
+    ucRaiVmRZk+jBrOuuEpU/FWvP8C/iZvnyE+t9I86DDKNiZSqifLyFDiFCoJvXy+c
+    /x4SrOBDJHl4QiCk17gUuHf9Eb37JsX3M3MZ6hGW0PmqlmwZKCh5ukwf4LdGPkFt
+    lxc+miWEuwKBgDDYQf45XxH3riLAZJBd1BhA8fKE6JpyQgaQlPsXqXuS8b3xyO18
+    se7hk6D22d0XsX7WhorjrMsZxwQI/SILxTlstlyLeISUUHMvuj3TO7XRGk1+1znq
+    zg13HveiWYoSxIYpd4ctYgrpOvX6L+poiDOEpZ+tZk8kgOvpYkzlZDiVAoGBALwQ
+    49Gf3rrkrW58MaPKtyGdOxREzWUMLrffS5PtUtqUYUrQdb528vjuzhQsEInFTpao
+    sB1/iuMILANUwRJ6An52cnXKyruUhZjWMEjPIIc9GA7/4NmefV3W0ylLkpFyOgeC
+    td0JPcVmUzKtJWyhJIPZ6U2E1WSeTbg7Sa2ApwOHAoGBAOLbpmibOF+PPjIsQ0Dg
+    Qe6IriVLwcTAUkMJE+nu7G6F/xOMe3DXWHcEqctFlBojn0l0rzwQ1d+QEhMvw0mr
+    bpzmbegeBqJFAZoArNUhQXpJP5p8LK7/nn6Cxo4rxGXxWLzfC2RttPSCx9gCrVQ+
+    sDGe5Jk8qKaVUZA3Yvr45rFM
+  publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5G6+JKZSHlQQ8aqMPFH4
+    xUE8ONaxcwiMbV8s/lICg1A3EbHqa45KU5rBsM22Y0wbEWCtpXm4X5psr18OzqbD
+    T1i/ulApN97+TQ22zO+sSk66Pty5qdGAUMxez3C9OsgIcVtMfGqWUJ7lSyYAIE+U
+    OtBz3Zcxrew6YmQ4y6ApnXiLxobeVzs886T4PI9DlNs2xnns02kgOBlm365FzdlE
+    tXwhitRsJNwQcwsq8RrRXOmNvJq34oBVjp7ir17HY9ftzHxcgZ2xZRoXtYIkFer/
+    RbIpvp6csc9qdqufFwowmdMb5RukwQ26SniUFsw+UdM6wVeSDAT9/FagrU8DksDA
+    VwIDAQAB
+  #是否开启加密 true
+  open: true
+  # 是否打印加解密log
+  showLog: true

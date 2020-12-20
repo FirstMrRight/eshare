@@ -3,13 +3,11 @@ package com.example.ltx.eshare;
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
 import com.example.ltx.eshare.common.enums.ResponseEnum;
+import com.example.ltx.eshare.common.model.EncryptConfig;
 import com.example.ltx.eshare.common.redis.RedisService;
 import com.example.ltx.eshare.module.entity.Menu;
 import com.example.ltx.eshare.module.entity.Role;
-import com.example.ltx.eshare.module.entity.User;
 import com.example.ltx.eshare.module.service.MenuService;
-import org.checkerframework.checker.units.qual.A;
-import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +25,8 @@ class EshareApplicationTests {
     @Autowired
     MenuService menuService;
 
+    @Autowired
+    EncryptConfig encryptConfig;
     @Test
     void contextLoads() {
         ArrayList<Role> arrayList = new ArrayList();
@@ -65,5 +65,11 @@ class EshareApplicationTests {
     public void menu2() {
         List<Menu> menu_all = (List<Menu>) redisUtil.getCacheObject("MENU_ALL");
         System.out.println(menu_all);
+    }
+
+    @Test
+    public void test3() {
+//        System.out.println(encryptConfig.getPrivatekey());
+//        System.out.println(encryptConfig.getSecret());
     }
 }

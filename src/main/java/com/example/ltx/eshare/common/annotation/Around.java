@@ -1,4 +1,4 @@
-package com.example.ltx.eshare.common.aop;
+package com.example.ltx.eshare.common.annotation;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Aspect;
