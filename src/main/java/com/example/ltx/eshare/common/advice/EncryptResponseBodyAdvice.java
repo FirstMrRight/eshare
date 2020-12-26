@@ -2,8 +2,10 @@ package com.example.ltx.eshare.common.advice;
 
 import com.alibaba.fastjson.JSON;
 import com.example.ltx.eshare.common.annotation.Encrypt;
+import com.example.ltx.eshare.common.enums.ResultCode;
 import com.example.ltx.eshare.common.model.EncryptConfig;
-import com.example.ltx.eshare.common.utils.Base64Util;
+import com.example.ltx.eshare.common.resp.ResultMessage;
+import com.example.ltx.eshare.common.utils.MD5Util;
 import com.example.ltx.eshare.common.utils.RSAUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,13 +54,19 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+
+        if (body instanceof ResultMessage) {
+            return body;
+        }
+        ResultMessage result;
+
         Boolean status = ENCRYPT_LOCAL.get();
         if (null != status && !status) {
             ENCRYPT_LOCAL.remove();
         } else {
-            if (this.encrypt) {
+            boolean hasEncryptBody = returnType.hasMethodAnnotation(Encrypt.class);
+            if (this.encrypt && hasEncryptBody) {
                 String publicKey = this.encryptConfig.getPublicKey();
-
                 try {
                     String content = JSON.toJSONString(body);
                     if (!StringUtils.hasText(publicKey)) {
@@ -67,15 +75,20 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
                     byte[] data = content.getBytes();
                     byte[] encodedData = RSAUtil.encrypt(data, publicKey);
-                    String result = Base64Util.encode(encodedData);
+                    String signStr = data + "&secret=" + encryptConfig.getSecret();
+                    String sign = MD5Util.MD5Encode(signStr, "utf-8");
+                    result = ResultMessage.success(encodedData, sign);
                     if (this.encryptConfig.isShowLog()) {
                         log.info("Pre-encrypted data：{}，After encryption：{}", content, result);
                     }
-
                     return result;
                 } catch (Exception var13) {
-                    log.error("Encrypted data exception", var13);
+                    log.error("rsa 解密失败,Encrypted data exception", var13);
+                    return ResultMessage.failure(ResultCode.SYSTEM_INNER_ERROR);
                 }
+            } else {
+                //未使用加密注解的接口
+                return ResultMessage.success(body);
             }
 
         }

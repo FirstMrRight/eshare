@@ -2,7 +2,7 @@ package com.example.ltx.eshare.module.mapper;
 
 import com.example.ltx.eshare.module.entity.Role;
 import com.example.ltx.eshare.module.entity.User;
-import org.apache.ibatis.annotations.Mapper;
+import com.example.ltx.eshare.module.entity.UserDto;
 
 import java.util.List;
 
@@ -15,5 +15,7 @@ public interface UserMapper {
     User loadUserByUserName(String userName);
 
     List<Role> getUserRolesById(Integer id);
+
+    List<UserDto> getUserById(Integer id);
 
 }

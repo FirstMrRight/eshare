@@ -21,7 +21,7 @@ import java.util.List;
 
 @Data
 @Accessors(chain = true)
-public class User implements UserDetails {
+public class User implements UserDetails{
 
     private static final long serialVersionUID = 1L;
 

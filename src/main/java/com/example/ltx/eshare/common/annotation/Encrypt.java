@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 //加密注解
 @Target({ElementType.TYPE,ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-@Documented
+//@Documented
 
 public @interface Encrypt {
 }

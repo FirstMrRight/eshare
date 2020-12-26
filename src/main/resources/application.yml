@@ -83,3 +83,4 @@ encrypt:
   open: true
   # 是否打印加解密log
   showLog: true
+  secret: guanyibei

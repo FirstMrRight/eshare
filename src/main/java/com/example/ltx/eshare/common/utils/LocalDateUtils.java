@@ -17,7 +17,7 @@ import java.util.List;
  * @author Ltx
  * @date 2020/12/13
  */
-public class LocalDateUtils {
+public class  LocalDateUtils {
 
     /**
      * 显示年月日时分秒，例如 2015-08-11 09:51:53.

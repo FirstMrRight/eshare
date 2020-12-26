@@ -1,16 +1,16 @@
 package com.example.ltx.eshare.module.controller;
 
-import com.example.ltx.eshare.common.annotation.Decrypt;
 import com.example.ltx.eshare.common.annotation.Encrypt;
 import com.example.ltx.eshare.common.enums.ResponseEnum;
 import com.example.ltx.eshare.common.model.EncryptConfig;
-import com.example.ltx.eshare.module.entity.Role;
+import com.example.ltx.eshare.module.entity.UserDto;
 import com.example.ltx.eshare.module.mapper.UserMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.websocket.server.PathParam;
@@ -62,11 +62,11 @@ public class HelloController {
         return test;
     }
 
-    @Decrypt
+    @Encrypt
     @GetMapping("user/token")
     @ApiOperation(value = "用户测试", notes = "用户测试notes")
-    public List<Role> findUserByToken(Integer userId) {
+    public List<UserDto> findUserByToken(@RequestParam("id") Integer userId) {
         ResponseEnum.DATA_IS_WRONG.assertNotNull(userId);
-        return userMapper.getUserRolesById(userId);
+        return userMapper.getUserById(userId);
     }
 }

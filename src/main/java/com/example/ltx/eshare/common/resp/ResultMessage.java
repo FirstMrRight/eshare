@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 结果消息
@@ -21,6 +22,7 @@ public class ResultMessage implements Serializable {
     private String msg;
     private Object data;
     private String sign;
+    private Date timeStamp;
 
     public boolean hasError() {
         return !this.code.equals(ResultCode.SUCCESS.getCode());
@@ -44,12 +46,15 @@ public class ResultMessage implements Serializable {
         resultMessage.setResultCode(ResultCode.SUCCESS);
         resultMessage.setData(data);
         resultMessage.setSign(sign);
+        resultMessage.setTimeStamp(new Date());
         return resultMessage;
     }
+
 
     public static ResultMessage failure(ResultCode resultCode) {
         ResultMessage result = new ResultMessage();
         result.setResultCode(resultCode);
+        result.setTimeStamp(new Date());
         return result;
     }
 
@@ -57,6 +62,7 @@ public class ResultMessage implements Serializable {
         ResultMessage result = new ResultMessage();
         result.setResultCode(resultCode);
         result.setData(data);
+        result.setTimeStamp(new Date());
         return result;
     }
 
@@ -65,6 +71,7 @@ public class ResultMessage implements Serializable {
         result.setCode(responseEnum.getCode());
         result.setMsg(responseEnum.getMessage());
         result.setData(data);
+        result.setTimeStamp(new Date());
         return result;
     }
 

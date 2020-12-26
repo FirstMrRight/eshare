@@ -15,7 +15,8 @@ import org.springframework.stereotype.Component;
 public class EncryptConfig {
     private String privateKey;
     private String publicKey;
+    private String secret;
     private String charset = "UTF-8";
-    private boolean open = true;
+    private boolean open;
     private boolean showLog = false;
 }

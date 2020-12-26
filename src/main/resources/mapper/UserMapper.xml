@@ -8,4 +8,17 @@
     <select id="getUserRolesById" resultType="com.example.ltx.eshare.module.entity.Role">
         select * from user_role where uid= #{id}
     </select>
+    
+    <select id="getUserById" resultType="com.example.ltx.eshare.module.entity.UserDto">
+        SELECT
+            u.id,
+            u.user_name,
+            r.nameZh
+        FROM
+            user as u
+                LEFT JOIN user_role ur ON u.id = ur.uid
+                LEFT JOIN role r ON ur.rid = r.id
+        WHERE
+            u.id = #{id}
+    </select>
 </mapper>
