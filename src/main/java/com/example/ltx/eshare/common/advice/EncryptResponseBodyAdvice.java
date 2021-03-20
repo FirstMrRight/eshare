@@ -90,7 +90,6 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
                 //未使用加密注解的接口
                 return ResultMessage.success(body);
             }
-
         }
         return body;
     }

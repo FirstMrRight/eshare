@@ -1,10 +1,13 @@
 package com.example.ltx.eshare.module.controller;
 
+import cn.hutool.core.lang.Assert;
 import com.example.ltx.eshare.common.annotation.Encrypt;
 import com.example.ltx.eshare.common.enums.ResponseEnum;
 import com.example.ltx.eshare.common.model.EncryptConfig;
+import com.example.ltx.eshare.common.resp.ResultMessage;
 import com.example.ltx.eshare.module.entity.UserDto;
 import com.example.ltx.eshare.module.mapper.UserMapper;
+import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +71,16 @@ public class HelloController {
     public List<UserDto> findUserByToken(@RequestParam("id") Integer userId) {
         ResponseEnum.DATA_IS_WRONG.assertNotNull(userId);
         return userMapper.getUserById(userId);
+    }
+
+    @ApiOperation(value = "用户测试", notes = "用户测试notes")
+    @GetMapping("exception")
+    public ResultMessage exceptionTest(@RequestParam("id") Integer userId) {
+        System.out.println("111");
+        String a = null;
+        Preconditions.checkNotNull(a, ResponseEnum.RESULE_DATA_NONE.getMessage());
+        Assert.notNull(userId, ResponseEnum.SYSTEM_INNER_ERROR.getMessage());
+//        ResponseEnum.DATA_IS_WRONG.assertNotNull(userId);
+        return ResultMessage.success(userMapper.getUserById(userId));
     }
 }

@@ -8,6 +8,9 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 
+/**
+ * @author Liu-PC
+ */
 public class RSAUtil {
 
     public static final String KEY_ALGORITHM = "RSA";

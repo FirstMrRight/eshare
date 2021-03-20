@@ -33,7 +33,7 @@ public interface Assert {
      */
     default void assertNotNull(Object obj) {
         if (obj == null) {
-            throw newException(null);
+            throw newException();
         }
     }
 

@@ -6,9 +6,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.ltx.eshare.common.enums.ResponseEnum;
 import com.google.common.base.Preconditions;
-import com.sun.istack.internal.NotNull;
+import com.example.ltx.eshare.common.enums.ResponseEnum;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;

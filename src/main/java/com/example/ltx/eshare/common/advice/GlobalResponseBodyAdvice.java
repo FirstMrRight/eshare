@@ -1,5 +1,6 @@
 package com.example.ltx.eshare.common.advice;
 
+import com.example.ltx.eshare.common.enums.ResponseEnum;
 import com.example.ltx.eshare.common.enums.ResultCode;
 import com.example.ltx.eshare.common.exception.BaseException;
 import com.example.ltx.eshare.common.exception.BisException;
@@ -57,6 +58,9 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice {
             MethodArgumentNotValidException methodArgumentNotValidException = (MethodArgumentNotValidException) e;
             String msg = Objects.requireNonNull(methodArgumentNotValidException.getBindingResult().getFieldError()).getDefaultMessage();
             return ResultMessage.failure(ResultCode.PARAM_IS_INVALID, msg);
+        } else if (e instanceof NullPointerException) {
+            NullPointerException businessException = (NullPointerException) e;
+            return ResultMessage.failure(ResultCode.PARAM_IS_INVALID, ResponseEnum.SYSTEM_INNER_ERROR.getMessage());
         }
         log.error("exception is {}", e.getMessage(), e);
         return ResultMessage.failure(ResultCode.SYSTEM_INNER_ERROR);

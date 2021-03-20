@@ -22,7 +22,8 @@ public class RSAUtil2 {
     private static final int KEY_SIZE = 1024;
     private static final int ENCRYPT_BlOCK_SIZE = KEY_SIZE / 8 - 11;
     private static final int DECRYPT_BLOCK_SIZE = KEY_SIZE / 8;
-    private static final String RSA_PADDING = "RSA/ECB/PKCS1Padding";
+//    private static final String RSA_PADDING = "RSA/ECB/PKCS1Padding";
+    private static final String RSA_PADDING = "RSA";
     private static final String CODE = "UTF-8";
 
 
@@ -36,7 +37,7 @@ public class RSAUtil2 {
         /**
          * 中文处理（兼容前端js中文乱码问题）
          */
-        encryptStr = URLEncoder.encode(encryptStr, "utf-8");
+        encryptStr = URLEncoder.encode(encryptStr, CODE);
         byte[] encryptBytes = encryptStr.getBytes(CODE);
 
         if (encryptBytes.length <= ENCRYPT_BlOCK_SIZE) {

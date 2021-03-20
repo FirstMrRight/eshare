@@ -23,9 +23,6 @@ spring:
     password: ''
     port: 6379
 
-
-
-
 server:
   port: 9527
 
@@ -80,7 +77,7 @@ encrypt:
     RbIpvp6csc9qdqufFwowmdMb5RukwQ26SniUFsw+UdM6wVeSDAT9/FagrU8DksDA
     VwIDAQAB
   #是否开启加密 true
-  open: true
+  open: false
   # 是否打印加解密log
   showLog: true
   secret: guanyibei

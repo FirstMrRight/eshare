@@ -3,6 +3,9 @@ package com.example.ltx.eshare.common.exception;
 
 import lombok.Getter;
 
+/**
+ * @author Liu-PC
+ */
 @Getter
 public class BaseException extends RuntimeException {
 
