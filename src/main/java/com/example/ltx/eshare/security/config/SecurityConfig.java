@@ -93,6 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("admin")
                 .antMatchers("user/**").hasAnyRole("admin", "user")
+                .antMatchers("/test/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -167,9 +168,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         PrintWriter out = httpServletResponse.getWriter();
                         //todo: 需改进
                         if (authException instanceof InsufficientAuthenticationException) {
-                            throw new RuntimeException(ResponseEnum.SYSTEM_INNER_ERROR.getMessage());
+                            throw new RuntimeException(ResponseEnum.PERMISSION_NO_ACCESS.getMessage());
                         }
-//                        ResponseEnum.SYSTEM_INNER_ERROR.assertException(authException);
                         out.write(new ObjectMapper().writeValueAsString(authException));
                         out.flush();
                         out.close();

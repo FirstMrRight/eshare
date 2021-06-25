@@ -21,4 +21,7 @@
         WHERE
             u.id = #{id}
     </select>
+    <select id="getUser" resultType="com.example.ltx.eshare.module.entity.User">
+        select * from hr where id = #{userId}
+    </select>
 </mapper>

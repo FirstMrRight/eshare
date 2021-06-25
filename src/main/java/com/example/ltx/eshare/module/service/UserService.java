@@ -26,4 +26,8 @@ public class UserService implements UserDetailsService {
         ResponseEnum.PERSONAL_NAME_NULL.assertNotNull(user);
         return user.setRoles(userMapper.getUserRolesById(user.getId()));
     }
+
+    public User getUser(Integer userId) {
+        return userMapper.getUser(userId);
+    }
 }

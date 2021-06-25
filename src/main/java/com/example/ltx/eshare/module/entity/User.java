@@ -44,6 +44,11 @@ public class User implements UserDetails{
         return authorities;
     }
 
+    public User(Integer id, String userName) {
+        this.id = id;
+        this.userName = userName;
+    }
+
     @Override
     public String getPassword() {
         return passWord;

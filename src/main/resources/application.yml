@@ -4,15 +4,15 @@ spring:
     date-format: yyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   datasource:
-    url: jdbc:mysql://49.232.21.180:3306/javaboy?useUnicode=true&zeroDateTimeBehavior=round&characterEncoding=UTF-8
+    url: jdbc:mysql://47.111.102.79:3306/vhr?useUnicode=true&zeroDateTimeBehavior=round&characterEncoding=UTF-8
     username: root
-    password: 146118
+    password: Mrliu1998//
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
   redis:
     database: 2
-    host: 49.232.21.180
+    host: 47.111.102.79
     lettuce:
       pool:
         max-active: 8   #最大连接数据库连接数,设 0 为没有限制

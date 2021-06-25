@@ -5,11 +5,14 @@ import com.example.ltx.eshare.common.annotation.Encrypt;
 import com.example.ltx.eshare.common.enums.ResponseEnum;
 import com.example.ltx.eshare.common.model.EncryptConfig;
 import com.example.ltx.eshare.common.resp.ResultMessage;
+import com.example.ltx.eshare.module.entity.User;
 import com.example.ltx.eshare.module.entity.UserDto;
 import com.example.ltx.eshare.module.mapper.UserMapper;
+import com.example.ltx.eshare.module.service.UserService;
 import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,13 +20,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.websocket.server.PathParam;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Liutx
  * @date 2020/12/13 19:50
  * @Description
  */
+@Slf4j
 @Api(tags = "test")
 @RestController
 @RequestMapping("/test")
@@ -31,6 +38,9 @@ public class HelloController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private EncryptConfig encryptConfig;
@@ -82,5 +92,26 @@ public class HelloController {
         Assert.notNull(userId, ResponseEnum.SYSTEM_INNER_ERROR.getMessage());
 //        ResponseEnum.DATA_IS_WRONG.assertNotNull(userId);
         return ResultMessage.success(userMapper.getUserById(userId));
+    }
+
+    @GetMapping("optional")
+    public ResultMessage optionalTest(@RequestParam("id") Integer userId) {
+        User user = userService.getUser(userId);
+        Optional<User> optionalUser = Optional.ofNullable(user);
+        optionalUser.ifPresent(value -> log.debug(value.getUsername()));
+        User unknown = Optional.ofNullable(user).orElse(new User(0, "Unknown"));
+        log.info(unknown.getUsername());
+
+        User unknownGet = Optional.ofNullable(userService.getUser(userId)).orElseGet(() -> new User(0, "UnknownGet"));
+        log.info(unknownGet.getUsername());
+        List<User> userList = new ArrayList<>(2);
+        userList.add(unknown);
+        userList.add(unknownGet);
+
+        List<String> companyNames = Arrays.asList("paypal", "oracle", "", "microsoft", "", "apple");
+        Optional<List<String>> listOptional = Optional.of(companyNames);
+        int size = listOptional.map(List::size).orElse(0);
+        log.info(String.valueOf(size));
+        return ResultMessage.success().setData(userList);
     }
 }
