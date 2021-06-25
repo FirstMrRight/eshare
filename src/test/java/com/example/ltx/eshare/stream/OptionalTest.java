@@ -30,11 +30,13 @@ public class OptionalTest {
         Random random = new Random();
         int index = random.nextInt(3);
         log.debug("getRandomName() method - end");
+
+
         return names.get(index);
     }
 
     @Test
-    public void test2(){
+    public void test2() {
         String password = " password ";
         Optional<String> passOpt = Optional.of(password);
         boolean correctPassword = passOpt.filter(pass -> pass.equals("password")).isPresent();
@@ -44,8 +46,8 @@ public class OptionalTest {
     }
 
     @Test
-    public void test3(){
-        Person person = new Person("NICK",22);
+    public void test3() {
+        Person person = new Person("NICK", 22);
         Optional<Person> personOptional = Optional.ofNullable(person);
         Optional<String> optionalName = personOptional
                 .map(Person::getName)
@@ -53,5 +55,16 @@ public class OptionalTest {
 
         String name = personOptional.flatMap(Person::getName).orElse("");
         log.info(name);
+    }
+
+    @Test
+    public void test4() {
+
+        Integer a = null;
+        String value = String.valueOf(a);
+        log.info(value);
+
+        Person person = new Person();
+        person.setName(value == null ? null : value);
     }
 }

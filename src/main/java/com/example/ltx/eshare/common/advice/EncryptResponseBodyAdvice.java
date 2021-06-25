@@ -65,7 +65,10 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
             ENCRYPT_LOCAL.remove();
         } else {
             boolean hasEncryptBody = returnType.hasMethodAnnotation(Encrypt.class);
-            if (this.encrypt && hasEncryptBody) {
+            if (!this.encrypt && hasEncryptBody) {
+                //未使用加密注解的接口
+                return ResultMessage.success(body);
+            } else {
                 String publicKey = this.encryptConfig.getPublicKey();
                 try {
                     String content = JSON.toJSONString(body);
@@ -86,9 +89,6 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
                     log.error("rsa 解密失败,Encrypted data exception", var13);
                     return ResultMessage.failure(ResultCode.SYSTEM_INNER_ERROR);
                 }
-            } else {
-                //未使用加密注解的接口
-                return ResultMessage.success(body);
             }
         }
         return body;
