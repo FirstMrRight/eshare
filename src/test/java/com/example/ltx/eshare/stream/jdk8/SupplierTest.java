@@ -1,4 +1,4 @@
-package com.example.ltx.eshare.stream;
+package com.example.ltx.eshare.stream.jdk8;
 
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
@@ -59,7 +59,7 @@ public class SupplierTest {
 
         String dateStr2 = "2021-06-30 23:33:23";
         Date date2 = DateUtil.parse(dateStr2);
-
+        //国同学，这是我们相识的日子
         long betweenDay = DateUtil.between(date1, date2, DateUnit.DAY);
     }
 

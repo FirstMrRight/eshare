@@ -1,5 +1,6 @@
-package com.example.ltx.eshare.stream;
+package com.example.ltx.eshare.stream.jdk8;
 
+import com.example.ltx.eshare.stream.Person;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 

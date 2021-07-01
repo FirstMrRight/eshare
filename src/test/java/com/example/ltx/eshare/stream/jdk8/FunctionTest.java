@@ -1,4 +1,4 @@
-package com.example.ltx.eshare.stream;
+package com.example.ltx.eshare.stream.jdk8;
 
 import cn.hutool.core.io.LineHandler;
 import org.junit.jupiter.api.Test;

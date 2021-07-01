@@ -1,12 +1,11 @@
-package com.example.ltx.eshare.stream;
+package com.example.ltx.eshare.stream.jdk8;
 
+import com.example.ltx.eshare.stream.Employee;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author: LiuTX
@@ -38,6 +37,26 @@ public class LambdaTest {
         }
         return employees;
     }
+
+
+    @Test
+    public void test3() {
+        TreeSet<Integer> ts = new TreeSet();
+        ts.add(1);
+        ts.add(2);
+        ts.add(3);
+        ts.add(4);
+        ts.add(5);
+
+        TreeSet<Integer> treeSet= new TreeSet<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return Integer.compare(o1,o2);
+            }
+        });
+        treeSet.comparator();
+    }
+
 }
 
 
