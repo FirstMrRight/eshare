@@ -4,7 +4,6 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,15 +40,5 @@ public class LambdaTest {
     }
 }
 
-@Data
-@Builder
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-class Employee implements Serializable {
-    private static final long serialVersionUID = -9079722457749166858L;
-    private String name;
-    private Integer age;
-    private Double salary;
-}
+
 

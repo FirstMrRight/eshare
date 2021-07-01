@@ -1,8 +1,11 @@
 package com.example.ltx.eshare.stream;
 
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.copier.Copier;
 import org.junit.jupiter.api.Test;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -49,6 +52,16 @@ public class SupplierTest {
     }
 
 
+    @Test
+    public void testr2(){
+        String dateStr1 = "2016-09-01 22:33:23";
+        Date date1 = DateUtil.parse(dateStr1);
+
+        String dateStr2 = "2021-06-30 23:33:23";
+        Date date2 = DateUtil.parse(dateStr2);
+
+        long betweenDay = DateUtil.between(date1, date2, DateUnit.DAY);
+    }
 
 
 }

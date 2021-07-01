@@ -1,5 +1,7 @@
 package com.example.ltx.eshare.stream;
 
+import cn.hutool.core.io.LineHandler;
+
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,7 +39,6 @@ public class DataType {
         Set<BigDecimal> hashSet1 = new HashSet<>();
         hashSet1.add(new BigDecimal("1.0"));
         System.out.println(hashSet1.contains(new BigDecimal("1")));
-
 
         Set<BigDecimal> hashSet2 = new HashSet<>();
         hashSet2.add(new BigDecimal("1.0").stripTrailingZeros());
