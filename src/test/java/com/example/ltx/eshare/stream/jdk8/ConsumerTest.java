@@ -1,11 +1,16 @@
 package com.example.ltx.eshare.stream.jdk8;
 
+import com.example.ltx.eshare.stream.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -14,6 +19,14 @@ import java.util.stream.Stream;
  */
 @Slf4j
 public class ConsumerTest {
+
+
+    List<Employee> employees = Arrays.asList(
+            new Employee("张三", 18, 9999.99),
+            new Employee("李四", 38, 5555.55),
+            new Employee("王五", 60, 6666.66),
+            new Employee("赵六", 8, 7777.77),
+            new Employee("田七", 58, 3333.33));
 
     @Test
     public void test_Consumer() {
@@ -52,10 +65,21 @@ public class ConsumerTest {
         bo.apply(1, 2);
     }
 
-@Test
-    public void test5(){
-        Comparator<Integer> comparator = (x,y)->Integer.compare(x,y);
-        comparator.compare(1,2);
-}
+    @Test
+    public void test5() {
+        Comparator<Integer> comparator = (x, y) -> Integer.compare(x, y);
+        comparator.compare(1, 2);
+    }
+
+    @Test
+    public void test6() {
+        Collections.sort(employees, (e1, e2) -> {
+            if (e1.getAge() == e2.getAge()) {
+                return e1.getName().compareTo(e2.getName());
+            }
+            return Integer.compare(e1.getAge(), e2.getAge());
+        });
+        employees.stream().forEach(System.out::println);
+    }
 
 }
