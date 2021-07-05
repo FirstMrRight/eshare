@@ -1,7 +1,12 @@
 package com.example.ltx.eshare.stream.jdk8;
 
+import com.example.ltx.eshare.stream.Person;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.matchers.CompareTo;
+
+import java.util.function.BiPredicate;
+import java.util.function.BinaryOperator;
 
 /**
  * @Author: LiuTX
@@ -36,10 +41,20 @@ public class TestClass {
         operate(100L, 200L, new MyFunc<Long, Long>() {
             @Override
             public Long getValue(Long t1, Long t2) {
-                return t1*t2;
+                return t1 * t2;
             }
         });
 
-        operate(100L,200l,(X,Y)->X*Y);
+        operate(100L, 200l, (X, Y) -> X * Y);
+    }
+
+    @Test
+    public void test5() {
+        BinaryOperator<Double> bo = (x, y) -> Math.pow(x, y);
+
+        Double apply = bo.apply(1.1, 2.1);
+
+        BinaryOperator<Double> bos = Math::pow;
+        bos.apply(apply, apply);
     }
 }
