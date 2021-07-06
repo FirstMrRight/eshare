@@ -1,21 +1,21 @@
 package com.example.ltx.eshare.stream.jdk8;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.func.Func1;
-import com.baomidou.mybatisplus.core.toolkit.support.BiIntFunction;
 import com.example.ltx.eshare.stream.Employee;
 import com.google.common.base.Supplier;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+import java.io.InputStream;
 import java.io.PrintStream;
-import java.sql.PreparedStatement;
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @Author: LiuTX
@@ -29,6 +29,7 @@ public class LambdaTest {
                 new Employee("张三", 18, 9999.99),
                 new Employee("李四", 19, 55555.55),
                 new Employee("王五", 30, 6666.66),
+                new Employee("赵六", 25, 8888.88),
                 new Employee("赵六", 25, 8888.88));
 
         List<Employee> employeeList = filterEmployeesByAge(employees);
@@ -36,6 +37,22 @@ public class LambdaTest {
             log.info(employee.getName());
         }
 
+        List<Employee> collect = employees.stream().filter(employee -> employee.getAge() >= 25).collect(Collectors.toList());
+        System.out.println(collect);
+        List<Employee> distinctList = employees.stream().distinct().collect(Collectors.toList());
+
+        List<Employee> parallelDistinct = employees.parallelStream().distinct().collect(Collectors.toList());
+
+        List<Employee> limitList = employees.stream().limit(6).collect(Collectors.toList());
+        double sum = employees.stream().mapToDouble(Employee::getSalary).sum();
+
+        List<Employee> synchronizedList = Collections.synchronizedList(employees.parallelStream().distinct().collect(Collectors.toList()));
+
+        Optional<Double> reduce = employees.stream().map(Employee::getSalary).reduce(Double::sum);
+
+        employees.stream().collect(Collectors.collectingAndThen(Collectors.toList(), List::size));
+
+        String.valueOf(new Integer(new Byte("1")));
     }
 
     List<Employee> filterEmployeesByAge(List<Employee> list) {
@@ -151,6 +168,41 @@ public class LambdaTest {
 
         Function<Employee, String> func2 = Employee::getName;
         System.out.println(func2.apply(emp));
+    }
+
+    /**
+     * Stream并发测试
+     */
+    @Test
+    public void test11() {
+
+    }
+
+    private static List<Integer> list1 = new ArrayList<>();
+    private static List<Integer> list2 = new ArrayList<>();
+    private static List<Integer> list3 = new ArrayList<>();
+    private static List<Integer> list4 = new ArrayList<>();
+    private static Lock lock = new ReentrantLock();
+
+    public static void main(String[] args) {
+        //串行流
+        IntStream.range(0, 10000).forEach(list1::add);
+        //并行流
+        IntStream.range(0, 10000).parallel().forEach(list2::add);
+
+        //使用锁
+        IntStream.range(0, 10000).forEach(i -> {
+            lock.lock();
+            try {
+                list3.add(i);
+            } finally {
+                lock.unlock();
+            }
+        });
+
+        log.info("[{串行执行的大小}]" + list1.size());
+        log.info("{[并行执行的大小]}" + list2.size());
+        log.info("{[加锁并行执行的大小]}" + list1.size());
     }
 
 }
