@@ -20,4 +20,6 @@ public interface UserMapper {
     List<UserDto> getUserById(Integer id);
 
     User getUser(@Param("userId") Integer userId);
+
+    Boolean insertUser(User user);
 }

@@ -52,7 +52,6 @@ public class LambdaTest {
 
         employees.stream().collect(Collectors.collectingAndThen(Collectors.toList(), List::size));
 
-        String.valueOf(new Integer(new Byte("1")));
     }
 
     List<Employee> filterEmployeesByAge(List<Employee> list) {

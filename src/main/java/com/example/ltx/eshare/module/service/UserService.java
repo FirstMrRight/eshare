@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Liutx
@@ -29,5 +31,11 @@ public class UserService implements UserDetailsService {
 
     public User getUser(Integer userId) {
         return userMapper.getUser(userId);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Boolean createUser(User user){
+        userMapper.insertUser(user);
+        throw new RuntimeException();
     }
 }

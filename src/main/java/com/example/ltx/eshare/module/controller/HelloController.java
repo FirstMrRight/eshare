@@ -14,10 +14,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
 import java.util.ArrayList;
@@ -92,6 +89,13 @@ public class HelloController {
         Assert.notNull(userId, ResponseEnum.SYSTEM_INNER_ERROR.getMessage());
 //        ResponseEnum.DATA_IS_WRONG.assertNotNull(userId);
         return ResultMessage.success(userMapper.getUserById(userId));
+    }
+
+
+    @ApiOperation(value = "用户测试", notes = "用户测试notes")
+    @PostMapping("user")
+    public ResultMessage user(@RequestBody User user) {
+        return ResultMessage.success(userService.createUser(user));
     }
 
     @GetMapping("optional")

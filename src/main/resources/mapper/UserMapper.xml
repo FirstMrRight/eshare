@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.ltx.eshare.module.mapper.UserMapper">
-    
+    <insert id="insertUser" parameterType="com.example.ltx.eshare.module.entity.User">
+        INSERT INTO vhr.hr (userName)
+        VALUES (#{userName,jdbcType=VARCHAR});
+    </insert>
+
     <select id="loadUserByUserName" resultType="com.example.ltx.eshare.module.entity.User">
-        select * from user where user_name = #{userName}
+        select *
+        from user
+        where user_name = #{userName}
     </select>
     <select id="getUserRolesById" resultType="com.example.ltx.eshare.module.entity.Role">
-        select * from user_role where uid= #{id}
+        select *
+        from user_role
+        where uid = #{id}
     </select>
-    
+
     <select id="getUserById" resultType="com.example.ltx.eshare.module.entity.UserDto">
-        SELECT
-            u.id,
-            u.user_name,
-            r.nameZh
-        FROM
-            user as u
-                LEFT JOIN user_role ur ON u.id = ur.uid
-                LEFT JOIN role r ON ur.rid = r.id
-        WHERE
-            u.id = #{id}
+        SELECT u.id,
+               u.user_name,
+               r.nameZh
+        FROM user as u
+                 LEFT JOIN user_role ur ON u.id = ur.uid
+                 LEFT JOIN role r ON ur.rid = r.id
+        WHERE u.id = #{id}
     </select>
     <select id="getUser" resultType="com.example.ltx.eshare.module.entity.User">
-        select * from hr where id = #{userId}
+        select *
+        from hr
+        where id = #{userId}
     </select>
+
+
 </mapper>
