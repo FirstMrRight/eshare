@@ -1,5 +1,6 @@
 package com.example.ltx.eshare.stream.string;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import java.util.HashSet;
  * @Date: 2021/7/12 15:42
  */
 @Slf4j
+@Data
 public class PointWrong {
     private int x;
     private int y;
@@ -20,11 +22,11 @@ public class PointWrong {
         this.desc = desc;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        PointWrong that = (PointWrong) obj;
-        return x == that.x && y == that.y;
-    }
+//    @Override
+//    public boolean equals(Object obj) {
+//        PointWrong that = (PointWrong) obj;
+//        return x == that.x && y == that.y;
+//    }
 
     public static void main(String[] args) {
         PointWrong p1 = new PointWrong(1, 2, "a");

@@ -12,6 +12,7 @@ import com.example.ltx.eshare.module.service.UserService;
 import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Liutx
@@ -117,5 +119,39 @@ public class HelloController {
         int size = listOptional.map(List::size).orElse(0);
         log.info(String.valueOf(size));
         return ResultMessage.success().setData(userList);
+    }
+
+    /**
+     * 错误的零
+     *
+     * @param test 测试
+     * @return int
+     */
+    @GetMapping("wrong")
+    public int wrongNull(@RequestParam(value = "test", defaultValue = "1111") String test) {
+        return wrongMethod(test.charAt(0) == '1' ? null : new FooService(),
+                test.charAt(1) == '1' ? null : 1,
+                test.charAt(2) == '1' ? null : "OK",
+                test.charAt(3) == '1' ? null : "OK").size();
+    }
+
+    private List<String> wrongMethod(FooService fooService, Integer i, String s, String t) {
+        log.info("result {} {} {} {}", i + 1, s.equals("OK"), s.equals(t),
+                new ConcurrentHashMap<String, String>().put(null, null));
+        if (fooService.getBarService().bar().equals("OK"))
+            log.info("OK");
+        return null;
+    }
+
+    class FooService {
+        @Getter
+        private BarService barService;
+
+    }
+
+    class BarService {
+        String bar() {
+            return "OK";
+        }
     }
 }

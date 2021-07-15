@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 /**
  * @author Liutx
  * @date 2020/12/13 19:20
@@ -35,7 +37,6 @@ public class UserService implements UserDetailsService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public Boolean createUser(User user){
-        userMapper.insertUser(user);
-        throw new RuntimeException();
+        return Optional.ofNullable(userMapper.insertUser(user)).orElse(false);
     }
 }
