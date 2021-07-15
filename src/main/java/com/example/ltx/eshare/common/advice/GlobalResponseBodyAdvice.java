@@ -14,8 +14,10 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 
@@ -48,10 +50,11 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice {
     }
 
     @ExceptionHandler({Exception.class})
-    public ResultMessage exceptions(Exception e) {
+    public ResultMessage exceptions(HttpServletRequest req, HandlerMethod method, Exception e) {
         if (e instanceof BusinessException) {
             // 处理业务异常
             BusinessException businessException = (BusinessException) e;
+            log.warn(String.format("访问 %s -> %s 出现业务异常！", req.getRequestURI(), method.toString()), e);
             return ResultMessage.failure(businessException.getResultCode());
         } else if (e instanceof MethodArgumentNotValidException) {
             // 处理javax.validation异常
@@ -59,7 +62,7 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice {
             String msg = Objects.requireNonNull(methodArgumentNotValidException.getBindingResult().getFieldError()).getDefaultMessage();
             return ResultMessage.failure(ResultCode.PARAM_IS_INVALID, msg);
         } else if (e instanceof NullPointerException) {
-            NullPointerException businessException = (NullPointerException) e;
+            log.error(String.format("访问 %s -> %s 出现系统异常！", req.getRequestURI(), method.toString()), e);
             return ResultMessage.failure(ResultCode.PARAM_IS_INVALID, ResponseEnum.SYSTEM_INNER_ERROR.getMessage());
         }
         log.error("exception is {}", e.getMessage(), e);
