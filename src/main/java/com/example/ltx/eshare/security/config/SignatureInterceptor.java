@@ -24,6 +24,7 @@ public class SignatureInterceptor implements HandlerInterceptor {
             log.info("[preHandle] json数据 : {}", jsonParam);
 
             // 验签逻辑
+            //todo:数据脱敏
         }
 
         return true;
