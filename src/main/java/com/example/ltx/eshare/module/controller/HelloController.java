@@ -3,6 +3,8 @@ package com.example.ltx.eshare.module.controller;
 import cn.hutool.core.lang.Assert;
 import com.example.ltx.eshare.common.annotation.Encrypt;
 import com.example.ltx.eshare.common.enums.ResponseEnum;
+import com.example.ltx.eshare.common.enums.ResultCode;
+import com.example.ltx.eshare.common.exception.BusinessException;
 import com.example.ltx.eshare.common.model.EncryptConfig;
 import com.example.ltx.eshare.common.resp.ResultMessage;
 import com.example.ltx.eshare.module.entity.User;
@@ -17,7 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -96,8 +100,10 @@ public class HelloController {
 
     @ApiOperation(value = "用户测试", notes = "用户测试notes")
     @PostMapping("user")
-    public ResultMessage user(@RequestBody User user) {
-        return ResultMessage.success(userService.createUser(user));
+    public ResultMessage user(@RequestBody User user, HttpServletRequest request) throws IOException {
+        Boolean user1 = userService.createUser(user);
+        throw new BusinessException(ResultCode.SUCCESS);
+//        return ResultMessage.success();
     }
 
     @GetMapping("optional")
