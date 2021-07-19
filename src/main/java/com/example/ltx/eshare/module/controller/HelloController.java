@@ -107,8 +107,10 @@ public class HelloController {
     @PostMapping("user")
     public ResultMessage user(@RequestBody User user, HttpServletRequest request) throws IOException {
         Boolean user1 = userService.createUser(user);
-        throw new BusinessException(ResultCode.SUCCESS);
-//        return ResultMessage.success();
+        if (user1.equals(false)){
+            return ResultMessage.failure(ResultCode.PARAM_IS_INVALID,"未找到该用户");
+        }
+        return ResultMessage.success();
     }
 
     @GetMapping("optional")

@@ -71,7 +71,6 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice {
         if (e instanceof BusinessException) {
             // 处理业务异常
             BusinessException businessException = (BusinessException) e;
-//            log.warn(String.format("访问 %s -> %s 出现业务异常！", req.getRequestURI(), method.toString()), e);
             return ResultMessage.failure(businessException.getResultCode());
         } else if (e instanceof MethodArgumentNotValidException) {
             // 处理javax.validation异常
