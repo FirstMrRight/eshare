@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 public class SignatureInterceptor implements HandlerInterceptor {
+    public static final String APPLICATION_JSON_UTF8_VALUE = "application/json;charset=UTF-8";
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("[preHandle] executing... request uri is {}", request.getRequestURI());
@@ -49,7 +51,7 @@ public class SignatureInterceptor implements HandlerInterceptor {
     private boolean isJson(HttpServletRequest request) {
         if (request.getContentType() != null) {
             return request.getContentType().equals(MediaType.APPLICATION_JSON_VALUE) ||
-                    request.getContentType().equals(MediaType.APPLICATION_JSON_UTF8_VALUE);
+                    request.getContentType().equals(APPLICATION_JSON_UTF8_VALUE);
         }
 
         return false;

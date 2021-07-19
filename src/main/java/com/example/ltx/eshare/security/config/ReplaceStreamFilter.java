@@ -10,12 +10,12 @@ import java.io.IOException;
 /**
  * @author: LiuTX
  * @date: 2021/7/16 10:07
- * @description:
+ * @description: 责任链模式
  */
 @Slf4j
 public class ReplaceStreamFilter implements Filter {
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         log.info("StreamFilter初始化...");
     }
 

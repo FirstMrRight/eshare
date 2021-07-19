@@ -96,11 +96,9 @@ public class HelloController {
     @ApiOperation(value = "用户测试", notes = "用户测试notes")
     @GetMapping("exception")
     public ResultMessage exceptionTest(@RequestParam("id") Integer userId) {
-        System.out.println("111");
         String a = null;
         Preconditions.checkNotNull(a, ResponseEnum.RESULE_DATA_NONE.getMessage());
         Assert.notNull(userId, ResponseEnum.SYSTEM_INNER_ERROR.getMessage());
-//        ResponseEnum.DATA_IS_WRONG.assertNotNull(userId);
         return ResultMessage.success(userMapper.getUserById(userId));
     }
 
