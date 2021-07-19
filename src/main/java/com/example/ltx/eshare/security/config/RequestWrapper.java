@@ -44,8 +44,8 @@ public class RequestWrapper extends HttpServletRequestWrapper {
         try {
             return inputStream2String(request.getInputStream());
         } catch (IOException e) {
-            log.error("", e);
-            throw new RuntimeException(e);
+            log.error("输入流转字符串失败", e);
+            throw new RuntimeException("转换失败，请稍后再试");
         }
     }
 
@@ -68,10 +68,8 @@ public class RequestWrapper extends HttpServletRequestWrapper {
      */
     private String inputStream2String(InputStream inputStream) {
         StringBuilder sb = new StringBuilder();
-        BufferedReader reader = null;
 
-        try {
-            reader = new BufferedReader(new InputStreamReader(inputStream, Charset.defaultCharset()));
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, Charset.defaultCharset()))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
@@ -79,16 +77,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
         } catch (IOException e) {
             log.error("", e);
             throw new RuntimeException(e);
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    log.error("", e);
-                }
-            }
         }
-
         return sb.toString();
     }
 

@@ -14,6 +14,7 @@ import com.example.ltx.eshare.module.service.UserService;
 import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jodd.util.concurrent.ThreadFactoryBuilder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @author Liutx
@@ -48,6 +51,10 @@ public class HelloController {
     @Autowired
     private EncryptConfig encryptConfig;
 
+    //类被加载时执行一次
+    static {
+        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> log.error("Thread {} got exception", thread, throwable));
+    }
 
     @GetMapping("hello")
     @ApiOperation(value = "用户测试", notes = "用户测试notes")
@@ -159,5 +166,69 @@ public class HelloController {
         String bar() {
             return "OK";
         }
+    }
+
+
+    /**
+     * 设置保底处理程序
+     *
+     * @throws InterruptedException 多线程执行抛出异常时，会被中断
+     */
+    @GetMapping("execute")
+    public void execute() throws InterruptedException {
+
+        String prefix = "test";
+        ExecutorService threadPool = Executors.newFixedThreadPool(1, new ThreadFactoryBuilder()
+                .setNameFormat(prefix + "%d")
+                .setUncaughtExceptionHandler((thread, throwable) -> log.error("ThreadPool {} got exception", thread, throwable))
+                .get());
+        IntStream.rangeClosed(1, 10).forEach(i -> threadPool.execute(() -> {
+            if (i == 5) throw new RuntimeException("error");
+            log.info("I'm done : {}", i);
+        }));
+
+        threadPool.shutdown();
+        threadPool.awaitTermination(1, TimeUnit.HOURS);
+    }
+
+
+    /**
+     * 异常被生吞
+     * @throws InterruptedException
+     */
+    @GetMapping("submit")
+    public void submit() throws InterruptedException {
+
+        String prefix = "test";
+        ExecutorService threadPool = Executors.newFixedThreadPool(1, new ThreadFactoryBuilder().setNameFormat(prefix + "%d").get());
+        IntStream.rangeClosed(1, 10).forEach(i -> threadPool.submit(() -> {
+            if (i == 5) throw new RuntimeException("error");
+            log.info("I'm done : {}", i);
+        }));
+
+        threadPool.shutdown();
+        threadPool.awaitTermination(1, TimeUnit.HOURS);
+    }
+
+    @GetMapping("submitright")
+    public void submitRight() throws InterruptedException {
+
+        String prefix = "test";
+        ExecutorService threadPool = Executors.newFixedThreadPool(1, new ThreadFactoryBuilder().setNameFormat(prefix + "%d").get());
+
+        List<Future> tasks = IntStream.rangeClosed(1, 10).mapToObj(i -> threadPool.submit(() -> {
+            if (i == 5) throw new RuntimeException("error");
+            log.info("I'm done : {}", i);
+        })).collect(Collectors.toList());
+
+        tasks.forEach(task -> {
+            try {
+                task.get();
+            } catch (Exception e) {
+                log.error("Got exception", e);
+            }
+        });
+        threadPool.shutdown();
+        threadPool.awaitTermination(1, TimeUnit.HOURS);
     }
 }
