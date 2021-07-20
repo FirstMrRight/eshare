@@ -35,8 +35,8 @@ public class UserService implements UserDetailsService {
         return userMapper.getUser(userId);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
-    public Boolean createUser(User user){
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public boolean createUser(User user) {
         return Optional.ofNullable(userMapper.insertUser(user)).orElse(false);
     }
 }

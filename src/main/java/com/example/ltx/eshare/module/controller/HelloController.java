@@ -105,11 +105,9 @@ public class HelloController {
 
     @ApiOperation(value = "用户测试", notes = "用户测试notes")
     @PostMapping("user")
-    public ResultMessage user(@RequestBody User user, HttpServletRequest request) throws IOException {
+    public ResultMessage user(@RequestBody User user, HttpServletRequest request) {
         Boolean user1 = userService.createUser(user);
-        if (user1.equals(false)){
-            return ResultMessage.failure(ResultCode.PARAM_IS_INVALID,"未找到该用户");
-        }
+        ResponseEnum.USER_NOT_EXIST_OR_ERROR.assertEquals(true, user1);
         return ResultMessage.success();
     }
 
@@ -194,6 +192,7 @@ public class HelloController {
 
     /**
      * 异常被生吞
+     *
      * @throws InterruptedException
      */
     @GetMapping("submit")
