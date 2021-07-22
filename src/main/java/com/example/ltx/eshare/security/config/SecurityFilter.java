@@ -1,7 +1,7 @@
 package com.example.ltx.eshare.security.config;
 
 import com.example.ltx.eshare.common.constant.BusinessConstant;
-import com.example.ltx.eshare.common.redis.RedisService;
+import com.example.ltx.eshare.common.redis.RedisUtil;
 import com.example.ltx.eshare.module.entity.Menu;
 import com.example.ltx.eshare.module.entity.Role;
 import com.example.ltx.eshare.module.service.MenuService;
@@ -29,7 +29,7 @@ public class SecurityFilter implements FilterInvocationSecurityMetadataSource {
     private MenuService menuService;
 
     @Autowired
-    private RedisService redisService;
+    private RedisUtil redisUtil;
 
     /**
      * Ant规则匹配符
@@ -43,7 +43,7 @@ public class SecurityFilter implements FilterInvocationSecurityMetadataSource {
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
         String requestUrl = ((FilterInvocation) o).getRequestUrl();
         List<Menu> allMenus;
-        allMenus = redisService.getCacheObject(BusinessConstant.REDIS_RELATED.MENU_ALL);
+        allMenus = redisUtil.getCacheObject(BusinessConstant.REDIS_RELATED.MENU_ALL);
         if (CollectionUtils.isEmpty(allMenus)) {
             allMenus = menuService.getAllMenus();
         }

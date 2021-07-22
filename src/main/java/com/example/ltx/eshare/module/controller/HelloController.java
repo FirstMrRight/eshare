@@ -106,8 +106,7 @@ public class HelloController {
     @ApiOperation(value = "用户测试", notes = "用户测试notes")
     @PostMapping("user")
     public ResultMessage user(@RequestBody User user, HttpServletRequest request) {
-        Boolean user1 = userService.createUser(user);
-        ResponseEnum.USER_NOT_EXIST_OR_ERROR.assertEquals(true, user1);
+        ResponseEnum.USER_NOT_EXIST_OR_ERROR.assertEquals(true, userService.createUser(user));
         return ResultMessage.success();
     }
 

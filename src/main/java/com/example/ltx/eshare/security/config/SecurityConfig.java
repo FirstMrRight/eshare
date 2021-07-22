@@ -2,7 +2,7 @@ package com.example.ltx.eshare.security.config;
 
 import com.example.ltx.eshare.common.constant.BusinessConstant;
 import com.example.ltx.eshare.common.enums.ResponseEnum;
-import com.example.ltx.eshare.common.redis.RedisService;
+import com.example.ltx.eshare.common.redis.RedisUtil;
 import com.example.ltx.eshare.common.utils.LocalDateUtils;
 import com.example.ltx.eshare.module.entity.User;
 import com.example.ltx.eshare.module.service.UserService;
@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserService userService;
 
     @Autowired
-    private RedisService redisUtil;
+    private RedisUtil redisUtil;
 
 
     @Autowired
@@ -94,6 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("admin")
                 .antMatchers("user/**").hasAnyRole("admin", "user")
                 .antMatchers("/test/**").permitAll()
+                .antMatchers("/redistemplate/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
