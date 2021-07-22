@@ -1,5 +1,7 @@
 package com.example.ltx.eshare.module.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.ltx.eshare.common.constant.BusinessConstant;
 import com.example.ltx.eshare.common.redis.RedisUtil;
 import com.example.ltx.eshare.common.utils.LocalDateUtils;
@@ -57,6 +59,8 @@ public class RedisTemplateController {
         log.info("redisTemplate get {}", userFromRedisTemplate);
         Users userFromStringRedisTemplate = objectMapper.readValue(stringRedisTemplate.opsForValue().get("stringRedisTemplate"), Users.class);
         log.info("stringRedisTemplate get {}", userFromStringRedisTemplate);
+        Users users= (Users)redisUtil.getCacheObject("USER_UID_2021-07-22 00:00:00");
+        log.info("USER_UID_2021-07-22 00:00:00:{}", users);
     }
 
 //    @GetMapping("right2")
